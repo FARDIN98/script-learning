@@ -24,3 +24,9 @@ echo $HOME
 echo $PWD
 # Output: /home/fardinzzz/shell_script/script_learning
 # It shows present working directory
+
+
+# User Defined Variabled
+name=Mark
+echo This is $name
+# Output: This is Mark
