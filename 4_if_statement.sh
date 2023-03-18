@@ -11,7 +11,14 @@ fi
 
 # Output: condition is true
 
-if [ $count -gt 10 ]
+word=a
+if [[ $word == "b" ]]
 then
-    echo "condition is true"
+    echo "condition b is true"
+elif [[ $word == "a" ]]
+then
+    echo "condition a is true"
+else
+    echo "condition is false"
 fi
+# Output: condition a is true
