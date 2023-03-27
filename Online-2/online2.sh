@@ -1,40 +1,84 @@
 #!/bin/bash
 
-db="db.txt"      # name of the database file
-last=$#          # number of arguments passed to the script
+# Set the name of the database file to "db.txt"
+db="db.txt"
 
-name=""          # variable to store name
-cmd=$1           # command (first argument)
-number=$($last)  # last argument (supposed to be a number)
+# Set the last argument to the variable "last"
+last=$#
 
-if [ $cmd -eq "add" ]; then  # if the command is "add"
-  for (( i=2; i <= "$#"; i++ )); do
-    if [ ${i} -neq $last ]  # if it's not the last argument
-      name += "${!i}"       # add the argument to the name
-  done
-  name += "${number}"       # add the last argument to the name
-  echo $name >> $db         # write the name to the database file
-elif [ $cmd -eq "list" ]; then  # if the command is "list"
-  cat $db | while read line do  # read each line in the database
-    echo $line                # print the line to the console
-  done
-elif [ $cmd -eq "remove" ]; then  # if the command is "remove"
-  for (( i=2; i <= "$#"; i++ )); do
-    if [ ${i} -neq $last ]     # if it's not the last argument
-      name += "${!i}"          # add the argument to the name
-  done
- # $db is a variable containing the path to the database file
- # | is used to pipe the contents of the file to the while loop
- # read line reads each line of the file
- cat $db | while read line
- do
-      # if statement checks if the line does not contain the name
-      # *"$name"* is a wildcard pattern that matches any characters before and after the name
-      # -neq is used to check for inequality
-      if [[ $line -neq *"$name"* ]]; then
-          # If the line does not contain the name, continue to the next line
-          continue
-      fi
-      # If the line contains the name, print it
-      echo $line
-  done
+# Initialize the variable "name" to an empty string
+name=""
+
+# Set the first argument to the variable "cmd"
+cmd=$1
+
+# Set the variable "number" to the value of the last argument
+number=${$last}
+# add MD Ehsan Khan 011292112
+# add Ehsan Khan 011292112
+# add MD Khan 011292112
+# If the command is "add", add the name and number to the database
+if [ $cmd -eq "add" ]; then
+    # Loop through all arguments after the command
+    for (( i=2; i <= "$#"; i++ )); do
+        # If the argument is not the last argument (which is the phone number)
+        if [ $i -neq $last ]; then
+            # Concatenate the argument to the name variable
+            name+="${!i} "
+        fi
+    done
+    # Concatenate the phone number to the name variable
+    name+="${number}"
+    # Append the name and phone number to the end of the database file
+    echo $name >> $db
+
+# If the command is "list", display all entries in the database
+    elif [ $cmd -eq "list" ]; then
+    # Read each line in the database file and print it to the console
+    cat $db | while read line; do
+        echo $line
+    done
+
+# If the command is "remove", remove an entry from the database
+elif [ $cmd -eq "remove" ]; then
+    # Loop through all arguments after the command
+    for (( i=2; i <= "$#"; i++ )); do
+        # If the argument is not the last argument (which is the phone number)
+        if [ $i -neq $last ]; then
+            # Concatenate the argument to the name variable
+            name+="${!i} "
+        fi
+    done
+    # Read each line in the database file
+    cat $db | while read line do
+        # If the line does not contain the name to be removed, append it to a temporary file
+        if [[ $line -neq *"$name"* ]]; then
+            echo "$line" >> temp.txt
+        fi
+    done
+    # Replace the original database file with the temporary file
+    rm -rf $db
+    mv temp.txt $db
+
+    # If the command is "clear", delete the entire database file
+    elif [ $cmd -eq "clear" ]; then
+        rm -rf $db
+
+    # If the command is "lookup", search for a name and display its phone number
+    elif [ $cmd -eq "lookup" ]; then
+    # Loop through all arguments after the command
+    for (( i=2; i <= "$#"; i++ )); do
+        # If the argument is not the last argument (which is the phone number)
+        if [ $i -neq $last ]; then
+            # Concatenate the argument to the name variable
+            name+="${!i} "
+        fi
+    done
+    # Read each line in the database file
+    cat $db | while read line; do
+        # If the line contains the name to be looked up, extract and display the phone number
+        if [[ $line -eq *"$name"* ]]; then
+            grep -E "[0-9]{3}-[0-9]{3}-[0-9]{4}" $line
+        fi
+    done
+fi

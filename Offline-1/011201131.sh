@@ -28,7 +28,7 @@ head -9 File_131.txt | tail -8
 sudo useradd 011201131
 sudo passwd 011201131
 
-# Remove the write permission for File_131.txt
+#the write permission for File_131.txt
 chmod -rw File_131.txt
 
 # Switch to user 011201131
