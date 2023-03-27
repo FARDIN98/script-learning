@@ -22,7 +22,7 @@ function main() {
 	# ইনপুট নেওয়া হচ্ছে
 	read input
 	# ইনপুট যদি সংখ্যা হয় এবং ০ এর চেয়ে বড় হয় তবে নিম্নলিখিত কাজ হবে
-	if [ $input -ge 0 ] 2>/dev/null; then
+	if [ $input -ge 0 ] ; then
 		# sum_of_series ফাংশনকে কল করা হচ্ছে এবং ফলাফলটি প্রিন্ট করা হচ্ছে
 		sum_of_series $input
 		echo "The sum is: $?"
